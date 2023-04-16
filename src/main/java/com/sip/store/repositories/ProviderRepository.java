@@ -15,5 +15,8 @@ import com.sip.store.entities.Provider;
 public interface ProviderRepository extends CrudRepository<Provider, Long> {
 	@Query("FROM Article a WHERE a.provider.id = ?1")
     List<Article> findArticlesByProvider(long id);
+	
+	@Query("FROM Provider p WHERE p.name = ?1")
+	List<Provider> findProviderByName(String name);
 
 }

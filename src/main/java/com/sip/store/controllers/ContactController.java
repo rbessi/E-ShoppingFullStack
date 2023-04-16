@@ -30,7 +30,7 @@ import com.sip.store.repositories.ContactRepository;
 import com.sip.store.repositories.NewsRepository;
 import com.sip.store.repositories.ProviderRepository;
 @Controller
-@RequestMapping("/contact/")
+@RequestMapping("/contact")
 public class ContactController {
 	private final ContactRepository contactRepository;
 	public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/static/uploads";
@@ -53,17 +53,16 @@ public class ContactController {
         
         return "contact/contact";
     }
-    @PostMapping("/")
+    @PostMapping("/update")
     public String updateNews(@Valid Contact contact, BindingResult result,  Model model) {
     	long id=1;
         if (result.hasErrors()) {
         	contact.setId(id);
             return "contact/contact";
         }
-       
+       System.out.print("ok");
         contactRepository.save(contact);
-        model.addAttribute("contact", contactRepository.findAll());
-        return "dashboard/dashboard";
+        return "redirect:../dashboard";
     }
 
     

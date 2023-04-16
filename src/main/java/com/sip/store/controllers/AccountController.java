@@ -57,7 +57,7 @@ public class AccountController {
     public String enableUserAcount(@PathVariable ("id") int id,
                                    @PathVariable ("email") String email) {
 
-       // sendEmail(email, true);
+        //sendEmail(email, true);
         User user = userRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Invalid User Id:" + id));
         user.setActive(1);
         userRepository.save(user);

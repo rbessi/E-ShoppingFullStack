@@ -26,8 +26,8 @@ public class HomeController {
     }
 
 
-   @RequestMapping("/contact")
+   /*@RequestMapping("/contact")
    public String contact() {
         return "front/contact.html";
-    }
+    }*/
 }

@@ -42,10 +42,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll() // accès pour tous users
                 .antMatchers("/login").permitAll() // accès pour tous users
                 .antMatchers("/registration").permitAll() // accès pour tous users
-                .antMatchers("/role/**").permitAll()
-                .antMatchers("/accounts/**").permitAll()
-                .antMatchers("/providers/**").hasAnyAuthority("ADMIN","USER")  // Authority = role
-                .antMatchers("/article/**").hasAnyAuthority("ADMIN","USER").anyRequest()
+                .antMatchers("/role/**").hasAnyAuthority("SUPERADMIN")
+                .antMatchers("/accounts/**").hasAnyAuthority("SUPERADMIN")
+                .antMatchers("/providers/**").hasAnyAuthority("ADMIN","SUPERADMIN")  // Authority = role
+                .antMatchers("/article/add").hasAnyAuthority("ADMIN","SUPERADMIN")
+                .antMatchers("/article/edit/**").hasAnyAuthority("ADMIN","SUPERADMIN")
+                .antMatchers("/article/delete/**").hasAnyAuthority("ADMIN","SUPERADMIN")
+                .antMatchers("/article/show/**").hasAnyAuthority("ADMIN","SUPERADMIN","AGENT")
+                .antMatchers("/article/list").hasAnyAuthority("ADMIN","SUPERADMIN","AGENT").anyRequest()
                 .authenticated().and().csrf().disable().formLogin() // l'accès de fait via un formulaire
                 
                 .loginPage("/login").failureUrl("/login?error=true") // fixer la page login

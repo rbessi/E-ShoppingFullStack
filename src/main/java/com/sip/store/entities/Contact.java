@@ -26,9 +26,9 @@ public class Contact {
     @Column(name = "email")
     private String email;
     
-    @NotBlank(message = "Localisatiin is mandatory")
-    @Column(name = "localisatiin")
-    private String localisatiin;
+    @NotBlank(message = "localisationn is mandatory")
+    @Column(name = "localisationn")
+    private String localisationn;
 
 	public Contact() {
 		super();
@@ -68,27 +68,27 @@ public class Contact {
 	}
 
 	public String getLocalisatiin() {
-		return localisatiin;
+		return localisationn;
 	}
 
-	public void setLocalisatiin(String localisatiin) {
-		this.localisatiin = localisatiin;
+	public void setLocalisatiin(String localisationn) {
+		this.localisationn = localisationn;
 	}
 
 	public Contact(long id, @NotBlank(message = "Phone is mandatory") String phone,
 			@NotBlank(message = "Fax is mandatory") String fax, @NotBlank(message = "Email is mandatory") String email,
-			@NotBlank(message = "Localisatiin is mandatory") String localisatiin) {
+			@NotBlank(message = "Localisatiin is mandatory") String localisationn) {
 		super();
 		this.id = id;
 		this.phone = phone;
 		this.fax = fax;
 		this.email = email;
-		this.localisatiin = localisatiin;
+		this.localisationn = localisationn;
 	}
 
 	@Override
 	public String toString() {
-		return "Contact [id=" + id + ", phone=" + phone + ", fax=" + fax + ", email=" + email + ", localisatiin="
-				+ localisatiin + "]";
+		return "Contact [id=" + id + ", phone=" + phone + ", fax=" + fax + ", email=" + email + ", localisationn="
+				+ localisationn + "]";
 	}
 }

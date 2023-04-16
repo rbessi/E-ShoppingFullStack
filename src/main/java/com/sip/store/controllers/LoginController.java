@@ -1,15 +1,19 @@
 package com.sip.store.controllers;
 
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import com.sip.store.entities.Article;
+import com.sip.store.entities.Messaging;
 import com.sip.store.entities.Provider;
 import com.sip.store.entities.Role;
 import com.sip.store.entities.User;
 import com.sip.store.repositories.ArticleRepository;
+import com.sip.store.repositories.MessagingRepository;
 import com.sip.store.repositories.ProviderRepository;
 import com.sip.store.repositories.RoleRepository;
 import com.sip.store.repositories.UserRepository;
@@ -30,12 +34,14 @@ public class LoginController {
 	private final ProviderRepository providerRepository;
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
+	private final MessagingRepository messagingRepository;
 	 @Autowired
-	    public LoginController(ArticleRepository articleRepository, ProviderRepository providerRepository,UserRepository userRepository, RoleRepository roleRepository) {
+	    public LoginController(ArticleRepository articleRepository, ProviderRepository providerRepository,UserRepository userRepository, RoleRepository roleRepository, MessagingRepository messagingRepository) {
 	        this.articleRepository = articleRepository;
 	        this.providerRepository = providerRepository;
 	        this.userRepository = userRepository;
 	        this.roleRepository = roleRepository;
+	        this.messagingRepository = messagingRepository;
 	    }
 	    
     @Autowired
@@ -52,10 +58,24 @@ public class LoginController {
         ModelAndView modelAndView = new ModelAndView();
     	long nbrArticles =  articleRepository.count();
     	long nbrProviders =  providerRepository.count();
-    	long nbrUsers =  userRepository.count();
-    	long nbrRoles =  roleRepository.count();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        //System.out.println(user.getEmail()+" "+user.getName()+" "+user.getLastName());
+    	List<Article> articles = articleRepository.findProductSoldOut();
+    	long nbrSoldOutProduct =  articles.size();
     	model.addAttribute("nbrArticles", nbrArticles);
     	model.addAttribute("nbrProviders", nbrProviders);
+    	model.addAttribute("nbrSoldOutProduct", nbrSoldOutProduct);
+    	model.addAttribute("users", userRepository.findAll());
+    	long nbrMsgNonLus = (messagingRepository.findAllMessageByStatus("Non lu",user)).size();
+    	model.addAttribute("nbrMsgNonLus", nbrMsgNonLus );
+    	// System.out.println(nbrMsgNonLus);
+    	model.addAttribute("articles", articleRepository.findAll());
+    	
+    	List<Messaging> messagesUnread = messagingRepository.findAllMessageByStatus("Non lu",user);
+    	
+   
+    	model.addAttribute("messagesUnread", messagesUnread);
         modelAndView.setViewName("dashboard/dashboard");
         return modelAndView;
     }
@@ -63,12 +83,10 @@ public class LoginController {
     public ModelAndView accueil(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
-
         ///
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         System.out.println(user.getEmail()+" "+user.getName()+" "+user.getLastName());
-
         ////
 
         return modelAndView;
